@@ -12,6 +12,7 @@ public class ParenthesesParser {
         case imbalancedFrames
         case foundFrameEndWithoutMatchingFrameStart
         case foundFrameStartWithoutMatchingFrameStart
+        case noFrame
     }
 
     private var frameTypes: [FrameType] = []
@@ -19,6 +20,16 @@ public class ParenthesesParser {
     private var content: any StringProtocol = ""
 
     public init() { }
+
+    public func nextFrame(_ content: any StringProtocol, from index: String.Index, types frameTypes: [FrameType] = [.parentheses]) throws -> Frame {
+        self.frameTypes = frameTypes
+        self.frameMarkerTypes = frameTypes.flatMap { [$0.startMarkerType, $0.endMarkerType] }
+        self.content = content
+        guard let frameStart = nextFrameMarker(from: index) else {
+            throw Error.noFrame
+        }
+        return try parse(from: frameStart.index)
+    }
 
     public func parse(_ content: any StringProtocol, types frameTypes: [FrameType] = [.parentheses]) throws -> Frame {
         self.frameTypes = frameTypes
