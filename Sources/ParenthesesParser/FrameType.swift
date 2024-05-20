@@ -20,3 +20,30 @@ public struct FrameType: Equatable {
         self.end = end
     }
 }
+
+public extension FrameType {
+    init?(start: Character) {
+        switch start {
+        case "{":
+            self = .braces
+        case "(":
+            self = .parentheses
+        case "[":
+            self = .brackets
+        default:
+            return nil
+        }
+    }
+
+    var isBraces: Bool {
+        self == .braces
+    }
+
+    var isParentheses: Bool {
+        self == .parentheses
+    }
+
+    var isBrackets: Bool {
+        self == .brackets
+    }
+}
