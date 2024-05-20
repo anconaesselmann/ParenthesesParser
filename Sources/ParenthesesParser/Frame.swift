@@ -8,4 +8,8 @@ public struct Frame {
     public let start: String.Index
     public let end: String.Index
     public let subFrames: [Frame]
+
+    public var range: Range<String.Index> {
+        start..<end
+    }
 }
